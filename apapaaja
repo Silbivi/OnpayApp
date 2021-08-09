@@ -1,0 +1,84 @@
+<script>
+                  function submit(){  document.getElementById('pembayaran_exe').submit();
+                    return true; 
+                  }
+              </script>      
+              <div class="text-center"><a href="javascript:void(0)&konfirmbayar.php?konper=<?php echo $kode ?>" onclick="submit()" class="button2">Bayar</a></div>
+              
+<?php
+include 'koneksi.php';
+$kode = $_GET['konper'];
+$kodetrans = $_GET['kodetrans'];
+$kodebayar = $_GET['kodebayar'];
+$nominal = $_GET['nominal'];
+$metbayartrans = $_GET['metbayartrans'];
+
+  $query = mysql_query("update transaksi set statuss=1 where kodetrans='$kode'");
+    if($query){
+       /* echo "<script> alert('Pesanan Berhasil Dibayar') </script>";
+        echo "<meta http-equiv='refresh' content='0 url = keranjang.php'>"; */
+
+    $kodetrans = $_POST['kodetrans'];
+    $kodebayar = $_POST['kodebayar'];
+    $nominal = $_POST['nominal'];
+	$metbayartrans = $_POST['metbayartrans'];
+
+      $sql= mysql_query("INSERT INTO pembayaran (kodetransaksi,kodebayar,nominal,metodebayar) VALUES ('$kodetrans','$kodebayar','$nominal','$metbayartrans')");
+      if ($sql) {
+         echo "<script> alert('Pembayaran Berhasil!')</script>";
+         echo "<meta http-equiv='refresh' content='0 url = keranjang.php'>";
+      }
+  }else{
+        echo "<script> alert('Terjadi Kegagalan') </script>";
+        echo "<meta http-equiv='refresh' content='0 url = pembayaran.php'>";
+    }
+
+?>
+
+
+<a href="konfirmbayar.php?konper=<?php echo $kode ?>" class="button2">Bayar</a>
+
+
+
+
+
+
+
+
+
+ title="Web 3" "App 2" "Card 2
+
+
+
+                <form action="" method="post" role="form" class="form-transaksi" title="App 2">
+             <br><br><br>
+                <table>
+                  <tr>
+                    <th>Kode Transaksi</th>
+                    <th>Kode Pembayaran</th>
+                    <th>Jenis Transaksi</th>
+                    <th>Nominal Transaksi</th>
+                    <th>Metode Bayar</th>
+                    <th><center>Cetak</th>
+                  </tr>
+    <?php
+        include 'koneksi.php';
+        $sql= mysql_query("select kodetransaksi, kodebayar, jenistrans, nominal, metodebayar from pembayaran inner join transaksi on kodetrans=kodetransaksi where status=1");
+        if ($sql) {
+          while ($data=mysql_fetch_array($sql)) {
+    ?>
+                  <tr>
+                    <td><?php echo $data['kodetransaksi']; ?></td>
+                    <td><?php echo $data['kodebayar']; ?></td>
+                    <td><?php echo $data['jenistrans']; ?></td>
+                    <td><?php echo $data['nominal']; ?></td>
+                    <td><?php echo $data['metodebayar']; ?></td>
+                      <td><a href="cetak_exe.php?kodetransaksi=<?php echo $data['kodetransaksi']?>"><center><b><font size="3"></font>⎙</b></center></a>
+                    </td>
+                  </tr>
+      <?php
+            }
+          }
+       ?>
+                </table>
+            </form>
